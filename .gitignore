@@ -1,2 +1,20 @@
-.venv
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Environments
+.venv/
 .env
+
+# Database files
+movies.db
+
+# Generated website files
+index.html
+style.css
+src/index.html
+src/style.css
+
+# IDE specific files
+.idx/
+.vscode/
