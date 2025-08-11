@@ -18,3 +18,4 @@ src/style.css
 # IDE specific files
 .idx/
 .vscode/
+src/index.html
