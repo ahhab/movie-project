@@ -7,6 +7,8 @@ DB_URL = "sqlite:///movies.db"
 engine = create_engine(DB_URL)
 
 # --- Schema Setup ---
+
+
 def setup_database():
     """
     Creates the movies table if it does not exist.
@@ -27,6 +29,8 @@ def setup_database():
         connection.commit()
 
 # --- CRUD Functions ---
+
+
 def list_movies():
     """
     Retrieves all movies from the database.
@@ -35,7 +39,8 @@ def list_movies():
         list: A list of dictionaries, where each dictionary represents a movie.
     """
     with engine.connect() as connection:
-        result = connection.execute(text("SELECT title, year, rating, poster_image_url FROM movies"))
+        result = connection.execute(
+            text("SELECT title, year, rating, poster_image_url FROM movies"))
         movies = []
         for row in result.fetchall():
             movies.append({
@@ -45,6 +50,7 @@ def list_movies():
                 "poster_image_url": row[3]
             })
         return movies
+
 
 def add_movie(title, year, rating, poster_image_url):
     """
@@ -58,9 +64,11 @@ def add_movie(title, year, rating, poster_image_url):
     """
     with engine.connect() as connection:
         try:
-            connection.execute(text(
-                "INSERT INTO movies (title, year, rating, poster_image_url) VALUES (:title, :year, :rating, :poster_image_url)"
-            ), {
+            query = text(
+                "INSERT INTO movies (title, year, rating, poster_image_url) "
+                "VALUES (:title, :year, :rating, :poster_image_url)"
+            )
+            connection.execute(query, {
                 "title": title,
                 "year": year,
                 "rating": rating,
@@ -74,20 +82,23 @@ def add_movie(title, year, rating, poster_image_url):
             print(f"An unexpected error occurred: {e}")
             connection.rollback()
 
+
 def delete_movie(title):
     """
     Deletes a movie from the database by its title.
 
     Args:
         title (str): The title of the movie to delete.
-    
+
     Returns:
         bool: True if a movie was deleted, False otherwise.
     """
     with engine.connect() as connection:
-        result = connection.execute(text("DELETE FROM movies WHERE title = :title"), {"title": title})
+        result = connection.execute(
+            text("DELETE FROM movies WHERE title = :title"), {"title": title})
         connection.commit()
         return result.rowcount > 0
+
 
 def update_movie(title, rating):
     """

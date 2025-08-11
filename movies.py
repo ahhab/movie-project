@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 import statistics
 import random
 import re
-import shutil
 
 # Load environment variables from .env file
 load_dotenv()
+
 
 def command_list_movies():
     """Retrieve and display all movies from the database."""
@@ -20,12 +20,14 @@ def command_list_movies():
     for movie in movies:
         print(f"  {movie['title']} ({movie['year']}): {movie['rating']}")
 
+
 def command_add_movie():
     """Add a new movie to the database by fetching data from OMDb API."""
     title_to_search = input("Enter movie title: ")
     api_key = os.getenv("OMDB_API_KEY")
     if not api_key:
-        print("Error: OMDB_API_KEY not found. Please set it in your .env file.")
+        print("Error: OMDB_API_KEY not found. "
+              "Please set it in your .env file.")
         return
 
     url = f"http://www.omdbapi.com/?t={title_to_search}&apikey={api_key}"
@@ -40,7 +42,7 @@ def command_add_movie():
             year = int(''.join(filter(str.isdigit, year_str))[:4])
             rating = float(movie_data["imdbRating"])
             poster_url = movie_data["Poster"]
-            
+
             storage.add_movie(title, year, rating, poster_url)
             print(f"Movie '{title}' successfully added.")
         else:
@@ -51,6 +53,7 @@ def command_add_movie():
     except (KeyError, ValueError) as e:
         print(f"Error parsing movie data: {e}")
 
+
 def command_delete_movie():
     """Deletes a movie from the database."""
     title = input("Enter movie title to delete: ")
@@ -58,6 +61,7 @@ def command_delete_movie():
         print(f"Movie '{title}' deleted successfully.")
     else:
         print(f"Movie '{title}' not found.")
+
 
 def command_update_movie():
     """Updates the rating of a movie in the database."""
@@ -70,6 +74,7 @@ def command_update_movie():
             print(f"Movie '{title}' not found.")
     except ValueError:
         print("Invalid rating. Please enter a number.")
+
 
 def command_stats():
     """Prints statistics for the movies in the database."""
@@ -84,7 +89,7 @@ def command_stats():
 
     best_movies = sorted(movies, key=lambda x: x['rating'], reverse=True)
     worst_movies = sorted(movies, key=lambda x: x['rating'])
-    
+
     print("\nBest movie(s):")
     for movie in best_movies:
         if movie['rating'] == best_movies[0]['rating']:
@@ -99,21 +104,26 @@ def command_stats():
         else:
             break
 
+
 def command_random_movie():
     """Selects and displays a random movie from the database."""
     movies = storage.list_movies()
     if not movies:
         print("No movies to choose from.")
         return
-    
+
     random_movie = random.choice(movies)
-    print(f"\nYour random movie for tonight: {random_movie['title']} ({random_movie['year']}) with a rating of {random_movie['rating']:.2f}")
+    print(f"\nYour random movie for tonight: {random_movie['title']} "
+          f"({random_movie['year']}) with a rating of "
+          f"{random_movie['rating']:.2f}")
+
 
 def command_search_movie():
     """Searches for movies in the database by title."""
     term = input("Enter search term: ")
     movies = storage.list_movies()
-    found_movies = [movie for movie in movies if re.search(term, movie['title'], re.IGNORECASE)]
+    found_movies = [movie for movie in movies if re.search(
+        term, movie['title'], re.IGNORECASE)]
 
     if not found_movies:
         print("No movies found for that search term.")
@@ -122,6 +132,7 @@ def command_search_movie():
     print(f"\nFound {len(found_movies)} movie(s):")
     for movie in found_movies:
         print(f"  {movie['title']}")
+
 
 def command_movies_by_rating():
     """Displays movies sorted by their rating."""
@@ -135,10 +146,14 @@ def command_movies_by_rating():
     for movie in sorted_movies:
         print(f"  {movie['title']}: {movie['rating']:.2f}")
 
+
 def command_generate_website():
-    """Generates a static website from the movie data and saves it in the src directory."""
+    """
+    Generates a static website from the movie data and saves it in the src
+    directory.
+    """
     movies = storage.list_movies()
-    
+
     # Read the template
     try:
         with open("_static/index_template.html", "r") as f:
@@ -153,7 +168,8 @@ def command_generate_website():
         movie_grid_html += f"""
         <li>
             <div class="movie">
-                <img class="movie-poster" src="{movie['poster_image_url']}" title="{movie['title']}">
+                <img class="movie-poster" src="{movie['poster_image_url']}"
+                     title="{movie['title']}">
                 <div class="movie-title">{movie['title']}</div>
                 <div class="movie-year">{movie['year']}</div>
             </div>
@@ -162,7 +178,8 @@ def command_generate_website():
 
     # Replace placeholders in the template
     website_html = template_html.replace("__TEMPLATE_TITLE__", "My Movie App")
-    website_html = website_html.replace("__TEMPLATE_MOVIE_GRID__", movie_grid_html)
+    website_html = website_html.replace(
+        "__TEMPLATE_MOVIE_GRID__", movie_grid_html)
 
     # Ensure the src directory exists
     os.makedirs("src", exist_ok=True)
@@ -170,12 +187,15 @@ def command_generate_website():
     # Write the new HTML file to the src directory
     with open("src/index.html", "w") as f:
         f.write(website_html)
-        
+
     # Copy the CSS file to the src directory
     try:
-        shutil.copy("_static/style.css", "src/style.css")
+        with open("_static/style.css", 'r') as f_css:
+            with open("src/style.css", 'w') as f_css_out:
+                f_css_out.write(f_css.read())
     except FileNotFoundError:
-        print("Warning: _static/style.css not found, website may not be styled correctly.")
+        print("Warning: _static/style.css not found, "
+              "website may not be styled correctly.")
 
     print("Website was generated successfully in the 'src' directory.")
 
@@ -183,7 +203,7 @@ def command_generate_website():
 def main():
     """Main function to run the movie database application."""
     storage.setup_database()  # Setup the database and table
-    
+
     commands = {
         "0": {"function": exit, "description": "Exit"},
         "1": {"function": command_list_movies, "description": "List movies"},
@@ -191,19 +211,23 @@ def main():
         "3": {"function": command_delete_movie, "description": "Delete movie"},
         "4": {"function": command_update_movie, "description": "Update movie"},
         "5": {"function": command_stats, "description": "Stats"},
-        "6": {"function": command_random_movie, "description": "Random movie"},
-        "7": {"function": command_search_movie, "description": "Search movie"},
-        "8": {"function": command_movies_by_rating, "description": "Movies sorted by rating"},
-        "9": {"function": command_generate_website, "description": "Generate website"},
+        "6": {"function": command_random_movie,
+              "description": "Random movie"},
+        "7": {"function": command_search_movie,
+              "description": "Search movie"},
+        "8": {"function": command_movies_by_rating,
+              "description": "Movies sorted by rating"},
+        "9": {"function": command_generate_website,
+              "description": "Generate website"},
     }
 
     while True:
         print("\n********** My Movies Database **********")
         for key, value in sorted(commands.items()):
             print(f"{key}. {value['description']}")
-        
+
         choice = input("Enter choice: ")
-        
+
         command = commands.get(choice)
         if command:
             if command['description'] == "Exit":
@@ -211,6 +235,7 @@ def main():
             command["function"]()
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
