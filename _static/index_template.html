@@ -7,10 +7,18 @@
 <div class="list-movies-title">
     <h1>__TEMPLATE_TITLE__</h1>
 </div>
+
+<div class="add-movie-form">
+    <form action="/add" method="post">
+        <input type="text" id="movie_title" name="movie_title" placeholder="Enter a movie title" required>
+        <button type="submit">Add Movie</button>
+    </form>
+</div>
+
 <div>
-    <ol class="movie-grid">
+    <ul class="movie-grid">
         __TEMPLATE_MOVIE_GRID__
-    </ol>
+    </ul>
 </div>
 </body>
 </html>

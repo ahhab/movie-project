@@ -1,12 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
-  </head>
+<html>
+<head>
+    <title>My Movie App</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="list-movies-title">
+    <h1>My Movie App</h1>
+</div>
 
-  <body>
-    <h1>Hello World</h1>
-  </body>
+<div class="add-movie-form">
+    <form action="/add" method="post">
+        <input type="text" id="movie_title" name="movie_title" placeholder="Enter a movie title" required>
+        <button type="submit">Add Movie</button>
+    </form>
+</div>
+
+<div>
+    <ul class="movie-grid">
+        
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_SX300.jpg"
+                     title="Toy Story">
+                <div class="movie-title">Toy Story</div>
+                <div class="movie-year">1995</div>
+            </div>
+        </li>
+        
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="https://m.media-amazon.com/images/M/MV5BNzVmODlhMDEtY2YxZi00OTVjLTlkNTktN2Q2OTRlM2I4M2FhXkEyXkFqcGc@._V1_SX300.jpg"
+                     title="Toy Story 2">
+                <div class="movie-title">Toy Story 2</div>
+                <div class="movie-year">1999</div>
+            </div>
+        </li>
+        
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="https://m.media-amazon.com/images/M/MV5BYzYyN2FiZmUtYWYzMy00MzViLWJkZTMtOGY1ZjgzNWMwN2YxXkEyXkFqcGc@._V1_SX300.jpg"
+                     title="Titanic">
+                <div class="movie-title">Titanic</div>
+                <div class="movie-year">1997</div>
+            </div>
+        </li>
+        
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="https://m.media-amazon.com/images/M/MV5BMTAzOTY5NTU2NDJeQTJeQWpwZ15BbWU4MDAyNzMyMTAx._V1_SX300.jpg"
+                     title="Bonjour Tristesse">
+                <div class="movie-title">Bonjour Tristesse</div>
+                <div class="movie-year">1958</div>
+            </div>
+        </li>
+        
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="https://m.media-amazon.com/images/M/MV5BMTM3NzQzMDA5Ml5BMl5BanBnXkFtZTcwODA5NTcyNw@@._V1_SX300.jpg"
+                     title="Detachment">
+                <div class="movie-title">Detachment</div>
+                <div class="movie-year">2011</div>
+            </div>
+        </li>
+        
+    </ul>
+</div>
+</body>
 </html>

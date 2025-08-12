@@ -21,19 +21,24 @@ def command_list_movies():
         print(f"  {movie['title']} ({movie['year']}): {movie['rating']}")
 
 
-def command_add_movie():
-    """Add a new movie to the database by fetching data from OMDb API."""
-    title_to_search = input("Enter movie title: ")
+def command_add_movie(movie_title=None):
+    """
+    Add a new movie to the database by fetching data from OMDb API.
+    If movie_title is not provided, it will prompt for input.
+    """
+    if movie_title is None:
+        movie_title = input("Enter movie title: ")
+
     api_key = os.getenv("OMDB_API_KEY")
     if not api_key:
         print("Error: OMDB_API_KEY not found. "
               "Please set it in your .env file.")
-        return
+        return False
 
-    url = f"http://www.omdbapi.com/?t={title_to_search}&apikey={api_key}"
+    url = f"http://www.omdbapi.com/?t={movie_title}&apikey={api_key}"
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status()
         movie_data = response.json()
 
         if movie_data.get("Response") == "True":
@@ -45,13 +50,17 @@ def command_add_movie():
 
             storage.add_movie(title, year, rating, poster_url)
             print(f"Movie '{title}' successfully added.")
+            return True
         else:
-            print(f"Error: Movie '{title_to_search}' not found on OMDb.")
+            print(f"Error: Movie '{movie_title}' not found on OMDb.")
+            return False
 
     except requests.exceptions.RequestException as e:
         print(f"Error connecting to OMDb API: {e}")
+        return False
     except (KeyError, ValueError) as e:
         print(f"Error parsing movie data: {e}")
+        return False
 
 
 def command_delete_movie():
@@ -232,7 +241,11 @@ def main():
         if command:
             if command['description'] == "Exit":
                 break
-            command["function"]()
+            # For "Add movie", we call it without arguments to get user input
+            if command['description'] == "Add movie":
+                command["function"]()
+            else:
+                command["function"]()
         else:
             print("Invalid choice. Please try again.")
 

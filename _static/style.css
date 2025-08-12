@@ -1,53 +1,81 @@
+/* General Body Styles */
 body {
-    background: #F5F5F0;
-    color: black;
-    font-family: Monaco;
-  }
-  
-  .list-movies-title {
-    padding: 10px 0;
-    background: #009B50;
-    color: white;
-    text-align: center;
-    font-size: 16pt;
-  }
-  
-  .movie-grid {
-    list-style-type: none;
-    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
     margin: 0;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .movie-grid li {
-    padding: 10px 15px;
-    text-align: left;
-  }
-  
-  .movie {
-    width: 140px;
-  }
-  
-  .movie-title,
-  .movie-year {
-    font-size: 0.8em;
+    padding: 20px;
+}
+
+/* Title Styles */
+.list-movies-title {
     text-align: center;
-  }
-  
-  .movie-title {
-    margin-top: 10px;
-  }
-  
-  .movie-year {
-    color: #999;
-  }
-  
-  
-  .movie-poster {
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-      width: 128px;
-      height: 193px;
-  }
-  
+    margin-bottom: 30px;
+}
+
+/* Add Movie Form Styles */
+.add-movie-form {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.add-movie-form input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.add-movie-form button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-movie-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Movie Grid (Chessboard Layout) */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* Movie Card Styles */
+.movie {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.movie:hover {
+    transform: scale(1.05);
+}
+
+.movie-poster {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.movie-title {
+    padding: 10px;
+    font-weight: bold;
+}
+
+.movie-year {
+    padding: 0 10px 10px;
+    color: #aaa;
+}
